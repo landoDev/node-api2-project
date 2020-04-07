@@ -85,7 +85,33 @@ server.delete('/api/posts/:id', (req, res) => {
             res.status(404).json({message: 'The post with the specified ID does not exist.' })
         }
     })
-})
+});
+
+server.put('/api/posts/:id', (req, res) => {
+    const updatePost = req.body
+    if(updatePost.title == "" || updatePost.contents == ""){
+        return res.status(400).json({errorMessage: 'Title or contents missing. Please address and try again'})
+    } else {
+    db.update(req.params.id, updatePost)
+    .then(count => {
+        if(count){
+            db.findById(req.params.id).then(post=>{
+                res.status(200).json(post);
+            })
+            .catch(err=>{
+                res.status(500).json({errorMessage: "The post could not be updated"})
+            })
+            res.status(201).json({message: 'This post was updated'});
+        } else {
+            res.status(404).json({message: 'The post with the specified ID does not exist.' })
+        }
+    })
+    .catch(err => res.status(500).json({errorMessage: 'Something went wrong on our end'}))
+}})
+
+
+
+
 
 const port = 5000;
 server.listen(port, () => console.log(`*** Server listening on ${port} ***`))
