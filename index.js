@@ -66,11 +66,25 @@ server.get('/api/posts/:id/comments', (req, res) => {
         } else {
             return res.status(404).json({message: "Post with that id not found"});
         }
-        // post === [] ? res.status(404).json({message: "Post with that id not found"})
-        // :
-        // res.status(200).json(post)
     })
     .catch(err => res.status(500).json({errorMessage: "The posts information could not be retrieved."}))
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(posts => {
+        if(posts){
+            db.findById(req.params.id).then(post=>{
+                res.status(200).json(post);
+            })
+            .catch(err=>{
+                res.status(500).json({errorMessage: "The post could not be removed"})
+            })
+            res.status(200).json({message: 'This post was YEETED'})
+        } else {
+            res.status(404).json({message: 'The post with the specified ID does not exist.' })
+        }
+    })
 })
 
 const port = 5000;
