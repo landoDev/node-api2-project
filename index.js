@@ -38,5 +38,13 @@ server.post('/api/posts/:id/comments', (req, res) => {
     .catch(err => res.status(500).json({errorMessage: 'Something went wrong on our end'}))
 })
 
+server.get('/api/posts', (req, res) => {
+    db.find()
+    .then(posts =>{
+        res.status(200).json(posts)
+    })
+    .catch(err => res.status(500).json({errorMessage: "The posts information could not be retrieved."}))
+})
+
 const port = 5000;
 server.listen(port, () => console.log(`*** Server listening on ${port} ***`))
