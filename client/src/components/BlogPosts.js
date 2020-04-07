@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Card, CardTitle, CardText, Row, Col } from 'reactstrap';
 import axios from 'axios'
 
 const BlogPosts = () =>{
@@ -11,7 +11,6 @@ const BlogPosts = () =>{
         })
         .catch(err=> console.log(err))
     },[])
-    console.log(posts)
     return(
         posts.map(post=>{
             return(
