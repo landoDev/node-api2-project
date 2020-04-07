@@ -27,5 +27,16 @@ server.post('/api/posts', (req, res) => {
     .catch(err => res.status(500).json({errorMessage: 'Something went wrong on our end'}))
 })
 
+server.post('/api/posts/:id/comments', (req, res) => {
+    const newComment = req.body
+    newComment.text == "" || !Number.isInteger(newComment.post_id) ? res.status(400).json({errorMessage: 'Text or Post Id missing. Include text or insure that post_id is of type Integer.'})
+    :
+    db.insertComment(req.body)
+    .then(comment =>{
+        res.status(201).json(comment)
+    })
+    .catch(err => res.status(500).json({errorMessage: 'Something went wrong on our end'}))
+})
+
 const port = 5000;
 server.listen(port, () => console.log(`*** Server listening on ${port} ***`))
