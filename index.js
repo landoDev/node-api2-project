@@ -46,5 +46,21 @@ server.get('/api/posts', (req, res) => {
     .catch(err => res.status(500).json({errorMessage: "The posts information could not be retrieved."}))
 })
 
+server.get('/api/posts/:id', (req, res) => {
+    db.findById(req.params.id)
+    .then(post =>{
+        console.log(post)
+        if(post == []){
+            return res.status(404).json({message: "Post with that id not found"});
+        } else {
+            return res.status(200).json(post)
+        }
+        // post === [] ? res.status(404).json({message: "Post with that id not found"})
+        // :
+        // res.status(200).json(post)
+    })
+    .catch(err => res.status(500).json({errorMessage: "The posts information could not be retrieved."}))
+})
+
 const port = 5000;
 server.listen(port, () => console.log(`*** Server listening on ${port} ***`))
