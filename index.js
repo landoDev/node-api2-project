@@ -49,11 +49,22 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     db.findById(req.params.id)
     .then(post =>{
-        console.log(post)
-        if(post == []){
-            return res.status(404).json({message: "Post with that id not found"});
+        if(post.length > 0){
+            return res.status(200).json(post);
         } else {
-            return res.status(200).json(post)
+            return res.status(404).json({message: "Post with that id not found"});
+        }
+    })
+    .catch(err => res.status(500).json({errorMessage: "The posts information could not be retrieved."}))
+})
+
+server.get('/api/posts/:id/comments', (req, res) => {
+    db.findPostComments(req.params.id)
+    .then(post =>{
+        if(post.length > 0){
+            return res.status(200).json(post);
+        } else {
+            return res.status(404).json({message: "Post with that id not found"});
         }
         // post === [] ? res.status(404).json({message: "Post with that id not found"})
         // :
