@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 
@@ -9,10 +10,8 @@ server.use(cors());
 server.use("/api/posts", postRouter)
 
 server.get('/', (req, res) => {
-    res.send(`
-      <h2>Blog API</h>
-      <p>Good to go Chief, happy coding</p>
-    `);
+    const message = process.env.MESSAGE
+    res.status(200).json({api: "green", message});
   });
 
 const port = process.env.PORT || 5000;
